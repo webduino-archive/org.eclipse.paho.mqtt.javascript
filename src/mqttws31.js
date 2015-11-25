@@ -748,7 +748,18 @@ Paho.MQTT = (function (global) {
 			throw new Error(format(ERROR.UNSUPPORTED, ["WebSocket"]));
 		}
 		if (!("localStorage" in global && global["localStorage"] !== null)) {
-			throw new Error(format(ERROR.UNSUPPORTED, ["localStorage"]));
+			localStorage = {
+				store: {},
+				setItem: function (key, val) {
+					this.store[key] = val;
+				},
+				getItem: function (key) {
+					return this.store[key];
+				},
+				removeItem: function (key) {
+					delete this.store[key];
+				}
+			};
 		}
 		if (!("ArrayBuffer" in global && global["ArrayBuffer"] !== null)) {
 			throw new Error(format(ERROR.UNSUPPORTED, ["ArrayBuffer"]));
